@@ -5,3 +5,5 @@
 temp/**
 temp.txt
 demo-workflows
+test-temp
+**/venv

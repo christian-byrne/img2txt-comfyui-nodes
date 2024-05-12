@@ -11,19 +11,18 @@
 
 ## Requirements/Dependencies
 
-- Pillow==10.0.0
-- Pillow==10.3.0
-- torch==2.2.1
-- torchvision==0.17.1
-- transformers==4.39.2
+- Pillow>=8.3.2
+- torch>=2.2.1
+- torchvision>=0.17.1
+- transformers>=4.35.3
 
 ## Installation
 
 
-- `cd` into ComfyUI/custom_nodes directory
+- `cd` into `ComfyUI/custom_nodes` directory
 - `git clone` this repo
-- `cd` into the repo
-- `python3 -m pip install -r requirements.txt`
+- `cd img2txt-comfyui-nodes`
+- `pip install -r requirements.txt`
 - Models will be automatically downloaded per-use. If you never toggle a model on in the UI, it will never be downloaded. Don't toggle on the Llava model if you don't want to download 15Gb. Outputs with BLIP only are still very good and only 1Gb w/ fast inference.
 
 

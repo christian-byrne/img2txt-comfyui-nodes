@@ -26,7 +26,7 @@ class BLIPImg2Txt:
             "max_length": max_words,
             "min_length": min_words,
             "num_beams": search_beams,
-            "temperature": temperature,
+            # "temperature": temperature,
             "repetition_penalty": repetition_penalty,
             "padding": "max_length",
         }

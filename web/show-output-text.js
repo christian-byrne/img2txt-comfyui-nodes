@@ -5,7 +5,7 @@ import { ComfyWidgets } from "../../../scripts/widgets.js";
 app.registerExtension({
   name: "Img2TxtNode",
   async beforeRegisterNodeDef(nodeType, nodeData, app) {
-    if (nodeData.name === "img2txt BLIP SalesForce Large") {
+    if (nodeData.name === "img2txt BLIP/Llava Multimodel Tagger") {
       function populate(message) {
         console.log("message", message);
         console.log("message.text", message.text);

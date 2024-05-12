@@ -1,7 +1,7 @@
 """
 @author: bymyself
 @title: img2txt BLIP/Llava Multimodel Tagger
-@nickname: img2txt
+@nickname: Image to Text - Auto Caption
 @description: img2txt node with multiple models and model selection options.
 """
 

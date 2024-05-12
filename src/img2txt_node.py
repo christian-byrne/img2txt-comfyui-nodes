@@ -1,12 +1,6 @@
 from PIL import Image
 import torch
-from transformers import (
-    BlipProcessor,
-    BlipForConditionalGeneration,
-    BlipConfig,
-    BlipTextConfig,
-    BlipVisionConfig,
-)
+
 from torchvision import transforms
 
 import sys
@@ -14,6 +8,8 @@ import os
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from src.img_tensor_utils import TensorImgUtils
+from src.llava_img2txt import LlavaImg2Txt
+from src.blip_img2txt import BLIPImg2Txt
 
 # from termcolor import colored
 from typing import Tuple
@@ -21,6 +17,7 @@ from typing import Tuple
 
 class Img2TxtNode:
     CATEGORY = "img2txt"
+
     @classmethod
     def INPUT_TYPES(s):
         return {
@@ -28,10 +25,40 @@ class Img2TxtNode:
                 "input_image": ("IMAGE",),
             },
             "optional": {
-                "conditional_image_captioning": (
+                "use_blip_model": (
+                    "BOOLEAN",
+                    {
+                        "default": True,
+                        "label_on": "Use BLIP (Requires 1Gb Disk)",
+                        "label_off": "Don't use BLIP",
+                    },
+                ),
+                "use_llava_model": (
+                    "BOOLEAN",
+                    {
+                        "default": False,
+                        "label_on": "Use Llava (Requires 15Gb Disk)",
+                        "label_off": "Don't use Llava",
+                    },
+                ),
+                "use_all_models": (
+                    "BOOLEAN",
+                    {
+                        "default": False,
+                        "label_on": "Use all models and combine outputs (Total Size: 16Gb)",
+                        "label_off": "Use selected models only",
+                    },
+                ),
+                "blip_caption_prefix": (
                     "STRING",
                     {
                         "default": "a photograph of",
+                    },
+                ),
+                "prompt_questions": (
+                    "STRING",
+                    {
+                        "default": "What is the subject of this image?\nWhat are the mediums used to make this?\nWhat are the artistic styles this is reminiscent of?\nWhich famous artists is this reminiscent of?\nHow sharp or detailed is this image?\nWhat is the environment and background of this image?\nWhat are the objects in this image?\nWhat is the composition of this image?\nWhat is the color palette in this image?\nWhat is the lighting in this image?",
                         "multiline": True,
                     },
                 ),
@@ -61,12 +88,8 @@ class Img2TxtNode:
                 "exclude_terms": (
                     "STRING",
                     {
-                        "default": "",
+                        "default": "watermark, text, writing",
                     },
-                ),
-                "skip_special_tokens": (
-                    "BOOLEAN",
-                    {"default": True, "label_on": "Skip", "label_off": "Keep"},
                 ),
             },
             "hidden": {
@@ -89,52 +112,74 @@ class Img2TxtNode:
     def main(
         self,
         input_image: torch.Tensor,  # [Batch_n, H, W, 3-channel]
-        conditional_image_captioning: str,
+        use_blip_model: bool,
+        use_llava_model: bool,
+        use_all_models: bool,
+        blip_caption_prefix: str,
+        prompt_questions: str,
         temperature: float,
         repetition_penalty: float,
         min_words: int,
         max_words: int,
         search_beams: int,
         exclude_terms: str,
-        skip_special_tokens: bool,
         output_text: str = "",
         unique_id=None,
         extra_pnginfo=None,
     ) -> Tuple[str, ...]:
-        """
-        Args:
-            input_image (torch.Tensor): [Batch_n, H, W, 3-channel] The input image
-            conditional_image_captioning (str): Conditional captioning phrase
-            temperature (float): 0.1 to 2.0 value to control the randomness of the output
-            repetition_penalty (float): 0.1 to 2.0 value to control the repetition of the output
-            min_words (int): Minimum number of tokens in the output
-            max_words (int): Maximum number of tokens in the output
-            search_beams (int): The number of beams in the beam search
-            exclude_terms (str): Comma-separated terms to exclude from the output
-            skip_special_tokens (bool): Whether to skip special tokens in the output like [CLS], [SEP], etc.
-        """
-
         raw_image = transforms.ToPILImage()(
             TensorImgUtils.convert_to_type(input_image, "CHW")
         ).convert("RGB")
 
-        if conditional_image_captioning == "":
-            conditional_image_captioning = "a photograph of"
+        if blip_caption_prefix == "":
+            blip_caption_prefix = "a photograph of"
 
-        general_caption = self.general_caption(
-            raw_image,
-            conditional_image_captioning,
-            skip_special_tokens,
-            min_words,
-            max_words,
-            temperature,
-            repetition_penalty,
-            search_beams,
-        )
+        captions = []
+        if use_all_models or use_blip_model:
+            blip = BLIPImg2Txt(
+                conditional_caption=blip_caption_prefix,
+                min_words=min_words,
+                max_words=max_words,
+                temperature=temperature,
+                repetition_penalty=repetition_penalty,
+                search_beams=search_beams,
+            )
+            captions.append(blip.generate_caption(raw_image))
 
-        out_string = self.exclude(exclude_terms, general_caption)
+        if use_all_models or use_llava_model:
+            llava_questions = prompt_questions.split("\n")
+            llava_questions = [
+                q
+                for q in llava_questions
+                if q != "" and q != " " and q != "\n" and q != "\n\n"
+            ]
+            if len(llava_questions) > 0:
+                llava = LlavaImg2Txt(
+                    question_list=llava_questions,
+                    model_id="llava-hf/llava-1.5-7b-hf",
+                    use_4bit_quantization=True,
+                    use_low_cpu_mem=True,
+                    use_flash2_attention=False,
+                    max_tokens_per_chunk=300,
+                )
+                captions.append(llava.generate_caption(raw_image))
+
+        out_string = self.exclude(exclude_terms, self.merge_captions(captions))
 
         return {"ui": {"text": out_string}, "result": (out_string,)}
+
+    def merge_captions(self, captions: list) -> str:
+        """Merge captions from multiple models into one string.
+        Necessary because we can expect the generated captions will generally
+        be comma-separated fragments ordered by relevance - so we should combine
+        fragments in an alternating order."""
+        merged_caption = ""
+        captions = [c.split(",") for c in captions]
+        for i in range(max(len(c) for c in captions)):
+            for j in range(len(captions)):
+                if i < len(captions[j]) and captions[j][i].strip() != "":
+                    merged_caption += captions[j][i].strip() + ", "
+        return merged_caption
 
     def exclude(self, exclude_terms: str, out_string: str) -> str:
         # https://huggingface.co/Salesforce/blip-image-captioning-large/discussions/20
@@ -144,48 +189,5 @@ class Img2TxtNode:
         ]
         for term in exclude_terms:
             out_string = out_string.replace(term, "")
-
-        return out_string
-
-    def general_caption(
-        self,
-        rgb_input_image: Image.Image,
-        conditional_caption: str,
-        strip_special_tokens: bool,
-        min_words: int,
-        max_words: int,
-        temperature: float,
-        repetition_penalty: float,
-        search_beams: int,
-    ) -> str:
-        model_path = "Salesforce/blip-image-captioning-large"
-        processor = BlipProcessor.from_pretrained(model_path)
-
-        # https://huggingface.co/docs/transformers/model_doc/blip#transformers.BlipTextConfig
-        text_config_kwargs = {
-            "max_length": max_words,
-            "min_length": min_words,
-            "num_beams": search_beams,
-            "temperature": temperature,
-            "repetition_penalty": repetition_penalty,
-            "padding": "max_length",
-        }
-        config_text = BlipTextConfig.from_pretrained(model_path)
-        config_text.update(text_config_kwargs)
-        config_vision = BlipVisionConfig.from_pretrained(model_path)
-        config = BlipConfig.from_text_vision_configs(config_text, config_vision)
-
-        # Update model configuration
-        model = BlipForConditionalGeneration.from_pretrained(model_path, config=config)
-        model = model.to("cuda")
-
-        inputs = processor(
-            rgb_input_image,
-            conditional_caption,
-            return_tensors="pt",
-        ).to("cuda")
-
-        out = model.generate(**inputs)
-        out_string = processor.decode(out[0], skip_special_tokens=strip_special_tokens)
 
         return out_string

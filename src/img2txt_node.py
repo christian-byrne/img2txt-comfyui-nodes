@@ -1,3 +1,10 @@
+"""
+@author: bymyself
+@title: img2txt BLIP/Llava Multimodel Tagger
+@nickname: img2txt
+@description: img2txt node with multiple models and model selection options.
+"""
+
 import sys
 import os
 import torch
@@ -187,5 +194,3 @@ class Img2TxtNode:
             out_string = out_string.replace(term, "")
 
         return out_string
-
-    

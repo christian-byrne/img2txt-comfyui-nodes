@@ -8,6 +8,25 @@
 
 ![alt text](wiki/demo-pics/Selection_002.png)
 
+
+## Requirements/Dependencies
+
+- Pillow==10.0.0
+- Pillow==10.3.0
+- torch==2.2.1
+- torchvision==0.17.1
+- transformers==4.39.2
+
+## Installation
+
+
+- `cd` into ComfyUI/custom_nodes directory
+- `git clone` this repo
+- `cd` into the repo
+- `python3 -m pip install -r requirements.txt`
+- Models will be automatically downloaded per-use. If you never toggle a model on in the UI, it will never be downloaded. Don't toggle on the Llava model if you don't want to download 15Gb. Outputs with BLIP only are still very good and only 1Gb w/ fast inference.
+
+
 ## Models Implemented (so far)
 
 - [Salesforce - blip-image-captioning-base](https://huggingface.co/Salesforce/blip-image-captioning-base)
@@ -30,7 +49,7 @@ This is the guide for the format of an "ideal" txt2img prompt (using BLIP). Use 
 - **Medium** - material used to make artwork. Some examples are illustration, oil painting, 3D rendering, and photography. Medium has a strong effect because one keyword alone can dramatically change the style.
 - **Style** - artistic style of the image. Examples include impressionist, surrealist, pop art, etc.
 - **Artists**  - Artist names are strong modifiers. They allow you to dial in the exact style using a particular artist as a reference. It is also common to use multiple artist names to blend their styles. Now let’s add Stanley Artgerm Lau, a superhero comic artist, and Alphonse Mucha, a portrait painter in the 19th century.
-<!-- - **Website** - Niche graphic websites such as Artstation and Deviant Art aggregate many images of distinct genres. Using them in a prompt is a sure way to steer the image toward these styles. -->
+- **Website** - Niche graphic websites such as Artstation and Deviant Art aggregate many images of distinct genres. Using them in a prompt is a sure way to steer the image toward these styles.
 - **Resolution** - Resolution represents how sharp and detailed the image is. Let’s add keywords highly detailed and sharp focus
 - **Enviornment**
 - **Additional** Details and objects - Additional details are sweeteners added to modify an image. We will add sci-fi, stunningly beautiful and dystopian to add some vibe to the image.

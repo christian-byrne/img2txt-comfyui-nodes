@@ -1,0 +1,6 @@
+.python-version
+**/*.pyc
+**/__pycache__/
+**/__pycache__
+temp/**
+temp.txt

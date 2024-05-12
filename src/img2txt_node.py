@@ -1,17 +1,13 @@
-from PIL import Image
-import torch
-
-from torchvision import transforms
-
 import sys
 import os
+import torch
+from torchvision import transforms
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from src.img_tensor_utils import TensorImgUtils
 from src.llava_img2txt import LlavaImg2Txt
 from src.blip_img2txt import BLIPImg2Txt
 
-# from termcolor import colored
 from typing import Tuple
 
 
@@ -191,3 +187,5 @@ class Img2TxtNode:
             out_string = out_string.replace(term, "")
 
         return out_string
+
+    

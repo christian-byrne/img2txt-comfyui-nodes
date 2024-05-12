@@ -1,4 +1,13 @@
 
+
+**Auto-generate caption (BLIP Only)**:
+
+![alt text](wiki/demo-pics/Selection_003.png)
+
+**Using to automate img2img process (BLIP and Llava)**
+
+![alt text](wiki/demo-pics/Selection_002.png)
+
 ## Models Implemented (so far)
 
 - [Salesforce - blip-image-captioning-base](https://huggingface.co/Salesforce/blip-image-captioning-base)
@@ -10,12 +19,12 @@
   - **Size**: ~ 15GB
   - **Dataset**: 558K filtered image-text pairs from LAION/CC/SBU, captioned by BLIP, 158K GPT-generated multimodal instruction-following data, 450K academic-task-oriented VQA data mixture, 40K ShareGPT data.
   - **Notable Requirements**: transformers >= 4.35.3
+- [More - to do](https://huggingface.co/models?pipeline_tag=image-to-text&sort=trending)
 
 ## Prompts
 
-Where possible, attempt to get descriptions to follow the format that works well for image generation (based on the assumption that you want to use img2txt as part of workflow in which you use one image or generation as the prompt for another — or something along those lines).
 
-This is the guide for the format of an "ideal" txt2img prompt (using BLIP):
+This is the guide for the format of an "ideal" txt2img prompt (using BLIP). Use as the basis for the questions to ask the img2txt models.
 
 - **Subject** - you can specify region, write the most about the subject
 - **Medium** - material used to make artwork. Some examples are illustration, oil painting, 3D rendering, and photography. Medium has a strong effect because one keyword alone can dramatically change the style.

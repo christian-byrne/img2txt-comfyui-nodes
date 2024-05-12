@@ -11,10 +11,12 @@
 
 ## Requirements/Dependencies
 
-- Pillow>=8.3.2
-- torch>=2.2.1
-- torchvision>=0.17.1
-- transformers>=4.35.3
+- Shared with ComfyUI
+  - Pillow>=8.3.2
+  - torch>=2.2.1
+  - torchvision>=0.17.1
+- Specific to this repo
+  - transformers>=4.35.3
 
 ## Installation
 

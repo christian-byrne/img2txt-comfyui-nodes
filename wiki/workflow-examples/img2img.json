@@ -1,0 +1,520 @@
+{
+  "last_node_id": 50,
+  "last_link_id": 58,
+  "nodes": [
+    {
+      "id": 41,
+      "type": "CLIPTextEncode",
+      "pos": [
+        1055,
+        571
+      ],
+      "size": {
+        "0": 348.9403381347656,
+        "1": 56.439388275146484
+      },
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 50
+        },
+        {
+          "name": "text",
+          "type": "STRING",
+          "link": 54,
+          "widget": {
+            "name": "text"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            44
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": 39,
+      "type": "KSampler",
+      "pos": [
+        1587,
+        982
+      ],
+      "size": {
+        "0": 315,
+        "1": 262
+      },
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 42
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 44
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 45
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 58
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            48
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        844021382511622,
+        "randomize",
+        20,
+        8,
+        "euler",
+        "normal",
+        1
+      ]
+    },
+    {
+      "id": 45,
+      "type": "VAEDecode",
+      "pos": [
+        1998,
+        1018
+      ],
+      "size": {
+        "0": 210,
+        "1": 46
+      },
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 48
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 49
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            55
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 47,
+      "type": "img2txt BLIP/Llava Multimodel Tagger",
+      "pos": [
+        596,
+        905
+      ],
+      "size": {
+        "0": 383.8721923828125,
+        "1": 425.2732849121094
+      },
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "input_image",
+          "type": "IMAGE",
+          "link": 53
+        }
+      ],
+      "outputs": [
+        {
+          "name": "caption",
+          "type": "STRING",
+          "links": [
+            54
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "img2txt BLIP/Llava Multimodel Tagger"
+      },
+      "widgets_values": [
+        true,
+        false,
+        false,
+        "a photograph of",
+        "What is the subject of this image?\nWhat are the mediums used to make this?\nWhat are the artistic styles this is reminiscent of?\nWhich famous artists is this reminiscent of?\nHow sharp or detailed is this image?\nWhat is the environment and background of this image?\nWhat are the objects in this image?\nWhat is the composition of this image?\nWhat is the color palette in this image?\nWhat is the lighting in this image?",
+        0.8,
+        1.2,
+        36,
+        128,
+        5,
+        "watermark, text, writing",
+        "a photograph of a drawing of a little girl in a pink dress with a butterfly on her head and a blue sky behind her and a green field with grass and blue sky in the background, "
+      ]
+    },
+    {
+      "id": 48,
+      "type": "PreviewImage",
+      "pos": [
+        2039,
+        1262
+      ],
+      "size": {
+        "0": 210,
+        "1": 246
+      },
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 55
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 11,
+      "type": "LoadImage",
+      "pos": [
+        -135,
+        907
+      ],
+      "size": {
+        "0": 670,
+        "1": 460
+      },
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            53,
+            56
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "shape": 3,
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "example.png",
+        "image"
+      ]
+    },
+    {
+      "id": 40,
+      "type": "CheckpointLoaderSimple",
+      "pos": [
+        1124,
+        1019
+      ],
+      "size": {
+        "0": 315,
+        "1": 98
+      },
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            42
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            50,
+            51
+          ],
+          "shape": 3,
+          "slot_index": 1
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            49,
+            57
+          ],
+          "shape": 3,
+          "slot_index": 2
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CheckpointLoaderSimple"
+      },
+      "widgets_values": [
+        "v1-5-pruned-emaonly.safetensors"
+      ]
+    },
+    {
+      "id": 42,
+      "type": "CLIPTextEncode",
+      "pos": [
+        1056,
+        683
+      ],
+      "size": [
+        352.9139297348879,
+        113.16606493276561
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 51
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            45
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "text, watermark"
+      ]
+    },
+    {
+      "id": 50,
+      "type": "VAEEncode",
+      "pos": [
+        1119,
+        1329
+      ],
+      "size": [
+        201.4841776687722,
+        55.595816998880764
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "pixels",
+          "type": "IMAGE",
+          "link": 56
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 57
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            58
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEEncode"
+      }
+    }
+  ],
+  "links": [
+    [
+      42,
+      40,
+      0,
+      39,
+      0,
+      "MODEL"
+    ],
+    [
+      44,
+      41,
+      0,
+      39,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      45,
+      42,
+      0,
+      39,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      48,
+      39,
+      0,
+      45,
+      0,
+      "LATENT"
+    ],
+    [
+      49,
+      40,
+      2,
+      45,
+      1,
+      "VAE"
+    ],
+    [
+      50,
+      40,
+      1,
+      41,
+      0,
+      "CLIP"
+    ],
+    [
+      51,
+      40,
+      1,
+      42,
+      0,
+      "CLIP"
+    ],
+    [
+      53,
+      11,
+      0,
+      47,
+      0,
+      "IMAGE"
+    ],
+    [
+      54,
+      47,
+      0,
+      41,
+      1,
+      "STRING"
+    ],
+    [
+      55,
+      45,
+      0,
+      48,
+      0,
+      "IMAGE"
+    ],
+    [
+      56,
+      11,
+      0,
+      50,
+      0,
+      "IMAGE"
+    ],
+    [
+      57,
+      40,
+      2,
+      50,
+      1,
+      "VAE"
+    ],
+    [
+      58,
+      50,
+      0,
+      39,
+      3,
+      "LATENT"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 1.2100000000000006,
+      "offset": {
+        "0": 382.82160745519366,
+        "1": -214.34788311458405
+      }
+    }
+  },
+  "version": 0.4
+}

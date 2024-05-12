@@ -47,12 +47,15 @@ class LlavaImg2Txt:
             ],
         }
 
-    def generate_caption(self, image: Image):
+    def generate_caption(self, image: Image, simple=False):
         # Convert Image to RGB first
-        if image.getmodebase() != "RGB":
+        if image.mode != "RGB":
             image = image.convert("RGB")
 
-        caption, raw_caption = self.__get_caption(image)
+        if simple:
+            caption = self.__get_single_question_caption(image)
+        else:
+            caption, raw_caption = self.__get_multi_question_caption(image)
         return caption
 
     def clean_output(self, decoded_output, delimiter=","):
@@ -128,7 +131,33 @@ class LlavaImg2Txt:
             prompt_chunks[-1].append(prompt_features[feature][0])
         return prompt_chunks
 
-    def __get_caption(
+    def __get_single_question_caption(
+        self,
+        raw_image: Image,
+        use_4bit_quantization=True,
+        use_flash2_attention=False,
+        use_low_cpu_mem_usage=True,
+    ):
+        model = LlavaForConditionalGeneration.from_pretrained(
+            self.model_id,
+            torch_dtype=torch.float16,
+            low_cpu_mem_usage=use_low_cpu_mem_usage,
+            load_in_4bit=use_4bit_quantization,
+            use_flash_attention_2=use_flash2_attention,
+        )
+
+        if torch.cuda.is_available() and not use_4bit_quantization:
+            model = model.to(0)
+
+        processor = AutoProcessor.from_pretrained(self.model_id)
+        prompt = "USER: <image>\nWhat is a very detailed description of this image?</s>ASSISTANT: "
+        inputs = processor(prompt, raw_image, return_tensors="pt").to(0, torch.float16)
+        output = model.generate(**inputs, max_new_tokens=300, do_sample=False)
+        decoded = processor.decode(output[0][2:], skip_special_tokens=True)
+        cleaned = self.clean_output(decoded)
+        return cleaned
+
+    def __get_multi_question_caption(
         self,
         raw_image: Image,
         use_4bit_quantization=True,
@@ -138,7 +167,6 @@ class LlavaImg2Txt:
         """
 
         Args:
-            prompt (str): The prompt to generate the caption for
             use_4bit_quantization (bool): Whether to use 4-bit quantization to reduce memory usage. 4-bit quantization reduces the precision of model parameters, potentially affecting the quality of generated outputs. Use if VRAM is limited.
             use_flash2_attention (bool): Whether to use Flash-Attention 2. Flash-Attention 2 focuses on optimizing attention mechanisms, which are crucial for the model's performance during generation. Use if computational resources are abundant.
             use_low_cpu_mem_usage (bool): In low_cpu_mem_usage mode, the model uses less memory on CPU, which can be useful when running multiple models on the same CPU. The model is initialized with optimizations aimed at reducing CPU memory consumption. This can be beneficial when working with large models or limited computational resources, such as systems with low RAM.
@@ -180,3 +208,4 @@ if __name__ == "__main__":
     x = LlavaImg2Txt()
     test_pic_path = "/home/c_byrne/projects/comfy-node-testing-tools/data/test-images/rgb/movie-scene/rgb-movie-scene-H576px_W1024px-jpg-26.jpg"
     test_image = Image.open(test_pic_path).convert("RGB")
+    print(x.generate_caption(test_image, simple=True))

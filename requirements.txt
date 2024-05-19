@@ -1,1 +1,2 @@
 transformers>=4.35.3
+bitsandbytes>=0.43.0

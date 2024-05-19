@@ -29,6 +29,15 @@
 - Models will be automatically downloaded per-use. If you never toggle a model on in the UI, it will never be downloaded. Don't toggle on the Llava model if you don't want to download 15Gb. Outputs with BLIP only are still very good and only 1Gb w/ fast inference.
 - To ask specific questions about the image and get good results, use the Llava model. The questions are separated by line in the multiline text input box.
 
+## Model Locations/Paths
+
+- Models are downloaded automatically using the Huggingface cache system and the transformers `from_pretrained` method so that it shouldn't require any manual intervention to download and load the models.
+- If you want to manually download the models, please refer to [their documentation](https://huggingface.co/docs/transformers/main/en/installation#cache-setup)
+  - Pretrained models are downloaded and locally cached at  `~/.cache/huggingface/hub`. This is the default directory given by the shell environment variable TRANSFORMERS_CACHE. On Windows, the default directory is given by `C:\Users\username\.cache\huggingface\hub`. You can change the shell environment variables shown below - in order of priority - to specify a different cache directory:
+    - Shell environment variable (default): HUGGINGFACE_HUB_CACHE or TRANSFORMERS_CACHE.
+    - Shell environment variable: HF_HOME.
+    - Shell environment variable: XDG_CACHE_HOME + /huggingface.
+
 
 ## Models Implemented (so far)
 

@@ -15,9 +15,12 @@
   - Pillow>=8.3.2
   - torch>=2.2.1
   - torchvision>=0.17.1
-- Specific to this repo
-  - transformers>=4.35.3
+- For Llava model
   - bitsandbytes>=0.43.0
+- For MiniCPM model
+  - transformers>=4.36.0
+  - timm==0.9.10
+  - sentencepiece==0.1.99
 
 ## Installation
 
@@ -26,8 +29,8 @@
 - `git clone` this repo
 - `cd img2txt-comfyui-nodes`
 - `pip install -r requirements.txt`
-- Models will be automatically downloaded per-use. If you never toggle a model on in the UI, it will never be downloaded. Don't toggle on the Llava model if you don't want to download 15Gb. Outputs with BLIP only are still very good and only 1Gb w/ fast inference.
-- To ask specific questions about the image and get good results, use the Llava model. The questions are separated by line in the multiline text input box.
+- Models will be automatically downloaded per-use. If you never toggle a model on in the UI, it will never be downloaded.
+- To ask a list of specific questions about the image, use the Llava or MiniPCM models. The questions are separated by line in the multiline text input box.
 
 ## Model Locations/Paths
 
@@ -41,17 +44,23 @@
 
 ## Models Implemented (so far)
 
+- [MiniCPM](https://huggingface.co/openbmb/MiniCPM-V-2/tree/main) (Chinese & English)
+  - **Title**: MiniCPM-V-2 - Strong multimodal large language model for efficient end-side deployment
+  - **Datasets**: HuggingFaceM4VQAv2, RLHF-V-Dataset, LLaVA-Instruct-150K
+  - **Size**: ~ 6.8GB
 - [Salesforce - blip-image-captioning-base](https://huggingface.co/Salesforce/blip-image-captioning-base)
   - **Title**: BLIP: Bootstrapping Language-Image Pre-training for Unified Vision-Language Understanding and Generation 
-  - **Size**: ~ 1GB
+  - **Size**: ~ 2GB
   - **Dataset**: COCO (The MS COCO dataset is a large-scale object detection, image segmentation, and captioning dataset published by Microsoft)
 - [llava - llava-1.5-7b-hf](https://huggingface.co/llava-hf/llava-1.5-7b-hf)
   - **Title**: LLava: Large Language Models for Vision and Language Tasks 
   - **Size**: ~ 15GB
   - **Dataset**: 558K filtered image-text pairs from LAION/CC/SBU, captioned by BLIP, 158K GPT-generated multimodal instruction-following data, 450K academic-task-oriented VQA data mixture, 40K ShareGPT data.
-  - **Notable Requirements**: transformers >= 4.35.3
+- Coming Soon: [Microsoft - Git Large coco](https://huggingface.co/microsoft/git-large-coco)
+  - **Title**: GIT (short for GenerativeImage2Text) mode
+  - **Size**: ~ 3GB
+  - **Dataset**: COCO  
 - [More - to do](https://huggingface.co/models?pipeline_tag=image-to-text&sort=trending)
-  - [MiniCPM](https://huggingface.co/openbmb/MiniCPM-V-2/tree/main)
 
 ## Prompts
 

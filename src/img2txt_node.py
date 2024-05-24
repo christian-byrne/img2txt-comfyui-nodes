@@ -1,8 +1,8 @@
 """
 @author: bymyself
-@title: img2txt BLIP/Llava Multimodel Tagger
+@title: 🚀 img2txt auto captioning. Supports Chinese questions/captions 🇨🇳. Choose from the highest rated image caption models: BLIP, Llava, MiniCPM, MS-GIT. Use combinations of models and merge results. Ask specific questions about images (medium, art style, background). Automatic model download/management.
 @nickname: Image to Text - Auto Caption
-@description: img2txt node with multiple models and model selection options.
+@description: 🚀 img2txt auto captioning. Supports Chinese questions/captions 🇨🇳. Choose from the highest rated image caption models: BLIP, Llava, MiniCPM, MS-GIT. Use combinations of models and merge results. Ask specific questions about images (medium, art style, background). Automatic model download/management.
 """
 
 import sys
@@ -14,6 +14,7 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from src.img_tensor_utils import TensorImgUtils
 from src.llava_img2txt import LlavaImg2Txt
 from src.blip_img2txt import BLIPImg2Txt
+from src.mini_pcm_img2txt import MiniPCMImg2Txt
 
 from typing import Tuple
 
@@ -32,7 +33,7 @@ class Img2TxtNode:
                     "BOOLEAN",
                     {
                         "default": True,
-                        "label_on": "Use BLIP (Requires 1Gb Disk)",
+                        "label_on": "Use BLIP (Requires 2Gb Disk)",
                         "label_off": "Don't use BLIP",
                     },
                 ),
@@ -42,6 +43,14 @@ class Img2TxtNode:
                         "default": False,
                         "label_on": "Use Llava (Requires 15Gb Disk)",
                         "label_off": "Don't use Llava",
+                    },
+                ),
+                "use_mini_pcm_model": (
+                    "BOOLEAN",
+                    {
+                        "default": False,
+                        "label_on": "Use MiniCPM (Requires 6Gb Disk)",
+                        "label_off": "Don't use MiniCPM",
                     },
                 ),
                 "use_all_models": (
@@ -118,6 +127,7 @@ class Img2TxtNode:
         use_blip_model: bool,
         use_llava_model: bool,
         use_all_models: bool,
+        use_mini_pcm_model: bool,
         blip_caption_prefix: str,
         prompt_questions: str,
         temperature: float,
@@ -166,6 +176,13 @@ class Img2TxtNode:
                     max_tokens_per_chunk=300,
                 )
                 captions.append(llava.generate_caption(raw_image))
+
+        if use_all_models or use_mini_pcm_model:
+            mini_pcm = MiniPCMImg2Txt(
+                question_list=prompt_questions.split("\n"),
+                temperature=temperature,
+            )
+            captions.append(mini_pcm.generate_captions(raw_image))
 
         out_string = self.exclude(exclude_terms, self.merge_captions(captions))
 

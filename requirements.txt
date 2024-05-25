@@ -1,4 +1,5 @@
-transformers>=4.35.3
+transformers>=4.36.0
 bitsandbytes>=0.43.0
 timm==0.9.10
 sentencepiece==0.1.99
+accelerate>=0.3.0

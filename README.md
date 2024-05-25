@@ -17,10 +17,12 @@
   - torchvision>=0.17.1
 - For Llava model
   - bitsandbytes>=0.43.0
+  - accelerate>=0.3.0
 - For MiniCPM model
   - transformers>=4.36.0
   - timm==0.9.10
   - sentencepiece==0.1.99
+- Python 3.10+
 
 ## Installation
 
@@ -32,10 +34,16 @@
 - Models will be automatically downloaded per-use. If you never toggle a model on in the UI, it will never be downloaded.
 - To ask a list of specific questions about the image, use the Llava or MiniPCM models. The questions are separated by line in the multiline text input box.
 
+## Support for Chinese
+
+- The `MiniCPM` model works with Chinese text input without any additional configuration. The output will also be in Chinese. 
+  - "MiniCPM-V 2.0 supports strong bilingual multimodal capabilities in both English and Chinese. This is enabled by generalizing multimodal capabilities across languages, a technique from VisCPM"
+<!-- - Here are the input field descriptions in Chinese, translated by  -->
+
 ## Model Locations/Paths
 
-- Models are downloaded automatically using the Huggingface cache system and the transformers `from_pretrained` method so that it shouldn't require any manual intervention to download and load the models.
-- If you want to manually download the models, please refer to [their documentation](https://huggingface.co/docs/transformers/main/en/installation#cache-setup)
+- Models are downloaded automatically using the Huggingface cache system and the transformers `from_pretrained` method so no manual installation of models is necessary.
+- If you really want to manually download the models, please refer to [Huggingface's documentation concerning the cache system](https://huggingface.co/docs/transformers/main/en/installation#cache-setup). Here is the relevant except:
   - Pretrained models are downloaded and locally cached at  `~/.cache/huggingface/hub`. This is the default directory given by the shell environment variable TRANSFORMERS_CACHE. On Windows, the default directory is given by `C:\Users\username\.cache\huggingface\hub`. You can change the shell environment variables shown below - in order of priority - to specify a different cache directory:
     - Shell environment variable (default): HUGGINGFACE_HUB_CACHE or TRANSFORMERS_CACHE.
     - Shell environment variable: HF_HOME.

@@ -1,8 +1,8 @@
 """
-@author: bymyself
-@title: 🚀 img2txt auto captioning. Supports Chinese questions/captions 🇨🇳. Choose from the highest rated image caption models: BLIP, Llava, MiniCPM, MS-GIT. Use combinations of models and merge results. Ask specific questions about images (medium, art style, background). Automatic model download/management.
+@author: christian-byrne
+@title: 🚀 img2txt auto captioning. Choose from the highest rated image caption models: BLIP, Llava, MiniCPM, MS-GIT. Use combinations of models and merge results. Ask specific questions about images (medium, art style, background). Automatic model download/management. Supports Chinese 🇨🇳
 @nickname: Image to Text - Auto Caption
-@description: 🚀 img2txt auto captioning. Supports Chinese questions/captions 🇨🇳. Choose from the highest rated image caption models: BLIP, Llava, MiniCPM, MS-GIT. Use combinations of models and merge results. Ask specific questions about images (medium, art style, background). Automatic model download/management.
+@description: 🚀 img2txt auto captioning. Choose from the highest rated image caption models: BLIP, Llava, MiniCPM, MS-GIT. Use combinations of models and merge results. Ask specific questions about images (medium, art style, background). Automatic model download/management.
 """
 
 import sys

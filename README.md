@@ -40,6 +40,11 @@
   - "MiniCPM-V 2.0 supports strong bilingual multimodal capabilities in both English and Chinese. This is enabled by generalizing multimodal capabilities across languages, a technique from VisCPM"
 <!-- - Here are the input field descriptions in Chinese, translated by  -->
 
+## Tips
+
+- The multi-line input can be used to ask any type of questions. You can even ask very specific or complex questions about images.
+- To get best results for a prompt that will be fed back into a txt2img or img2img prompt, usually it's best to only ask one or two questions, asking for a general description of the image and the most salient features and styles.
+
 ## Model Locations/Paths
 
 - Models are downloaded automatically using the Huggingface cache system and the transformers `from_pretrained` method so no manual installation of models is necessary.

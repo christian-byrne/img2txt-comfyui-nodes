@@ -1,15 +1,15 @@
 [project]
 name = "img2txt-comfyui-nodes"
-description = "Nodes:img2txt BLIP SalesForce Large"
+description = "🚀 img2txt auto captioning. Choose from models: BLIP, Llava, MiniCPM, MS-GIT. Use model combos and merge results. Specify questions to ask about images (medium, art style, background). Automatic model download/management. Supports Chinese 🇨🇳 questions/answers via MiniCPM."
 version = "1.0.0"
 license = "LICENSE"
-dependencies = ["transformers>=4.35.3", "bitsandbytes>=0.43.0"]
+dependencies = ["transformers>=4.36.0", "bitsandbytes>=0.43.0", "timm==0.9.10", "sentencepiece==0.1.99", "accelerate>=0.3.0"]
 
 [project.urls]
 Repository = "https://github.com/christian-byrne/img2txt-comfyui-nodes"
 #  Used by Comfy Registry https://comfyregistry.org
 
 [tool.comfy]
-PublisherId = ""
+PublisherId = "christian-byrne"
 DisplayName = "img2txt-comfyui-nodes"
-Icon = ""
+Icon = "https://img.icons8.com/?size=100&id=7212&format=png&color=000000"

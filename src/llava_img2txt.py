@@ -1,5 +1,4 @@
 from PIL import Image
-
 import torch
 from transformers import AutoProcessor, LlavaForConditionalGeneration
 
@@ -81,41 +80,8 @@ class LlavaImg2Txt:
         output_only = decoded_output.split("ASSISTANT: ")[1]
         lines = output_only.split("\n")
         cleaned_output = ""
-        split_candidates = [
-            "the famous artists' works",
-            "which often depict ",
-            "reminiscent of include ",
-            "reminiscent of includes ",
-            "reminiscent of an ",
-            "reminiscent of a ",
-            "reminiscent of ",
-            "giving the scene of ",
-            "giving the scene a ",
-            "appears to be ",
-            "includes a ",
-            "includes an ",
-            "capturing the ",
-            "creating a ",
-            "creating an ",
-            "using it to ",
-            "using it for ",
-            "such as ",
-            "features a ",
-            "this is an ",
-            "this is an ",
-            "this is a ",
-            "this is ",
-            "with the ",
-            "image is ",
-            "image of ",
-        ]
         for line in lines:
-            if line != "":
-                for candidate in split_candidates:
-                    if candidate in line:
-                        line = line.split(candidate)[-1:][0]
-
-                cleaned_output += self.__replace_delimiter(line, ".", delimiter)
+            cleaned_output += self.__replace_delimiter(line, ".", delimiter)
 
         return cleaned_output
 

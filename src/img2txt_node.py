@@ -1,8 +1,8 @@
 """
 @author: christian-byrne
-@title: 🚀 img2txt auto captioning. Choose from the highest rated image caption models: BLIP, Llava, MiniCPM, MS-GIT. Use combinations of models and merge results. Ask specific questions about images (medium, art style, background). Automatic model download/management. Supports Chinese 🇨🇳
+@title: 🚀 img2txt auto captioning. Choose from the strongest models: BLIP, Llava, MiniCPM, MS-GIT. Use model combos and merge results. Specify questions to ask about images (medium, art style, background). Automatic model download/management. Supports Chinese 🇨🇳 questions/answers via MiniCPM.
 @nickname: Image to Text - Auto Caption
-@description: 🚀 img2txt auto captioning. Choose from the highest rated image caption models: BLIP, Llava, MiniCPM, MS-GIT. Use combinations of models and merge results. Ask specific questions about images (medium, art style, background). Automatic model download/management.
+@description: 🚀 img2txt auto captioning. Choose from the strongest models: BLIP, Llava, MiniCPM, MS-GIT. Use model combos and merge results. Specify questions to ask about images (medium, art style, background). Automatic model download/management. Supports Chinese 🇨🇳 questions/answers via MiniCPM.
 """
 
 import sys
@@ -14,7 +14,7 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from src.img_tensor_utils import TensorImgUtils
 from src.llava_img2txt import LlavaImg2Txt
 from src.blip_img2txt import BLIPImg2Txt
-from src.mini_pcm_img2txt import MiniPCMImg2Txt
+from src.mini_cpm_img2txt import MiniPCMImg2Txt
 
 from typing import Tuple
 
@@ -57,7 +57,7 @@ class Img2TxtNode:
                     "BOOLEAN",
                     {
                         "default": False,
-                        "label_on": "Use all models and combine outputs (Total Size: 16Gb)",
+                        "label_on": "Use all models and combine outputs (Total Size: 20+Gb)",
                         "label_off": "Use selected models only",
                     },
                 ),
@@ -191,7 +191,7 @@ class Img2TxtNode:
     def merge_captions(self, captions: list) -> str:
         """Merge captions from multiple models into one string.
         Necessary because we can expect the generated captions will generally
-        be comma-separated fragments ordered by relevance - so we should combine
+        be comma-separated fragments ordered by relevance - so combine
         fragments in an alternating order."""
         merged_caption = ""
         captions = [c.split(",") for c in captions]

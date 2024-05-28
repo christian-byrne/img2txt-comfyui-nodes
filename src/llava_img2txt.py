@@ -1,5 +1,7 @@
+import os
 from PIL import Image
 import torch
+import model_management
 from transformers import AutoProcessor, LlavaForConditionalGeneration
 
 
@@ -34,8 +36,8 @@ class LlavaImg2Txt:
 
     def generate_caption(
         self,
-        raw_image: Image,
-    ):
+        raw_image: Image.Image,
+    ) -> str:
         """
         Generate a caption for an image using the Llava model.
 
@@ -56,23 +58,27 @@ class LlavaImg2Txt:
 
         # model.to() is not supported for 4-bit or 8-bit bitsandbytes models. With 4-bit quantization, use the model as it is, since the model will already be set to the correct devices and casted to the correct `dtype`.
         if torch.cuda.is_available() and not self.use_4bit:
-            model = model.to(0)
+            model = model.to(model_management.get_torch_device(), torch.float16)
 
         processor = AutoProcessor.from_pretrained(self.model_id)
         prompt_chunks = self.__get_prompt_chunks(chunk_size=4)
 
         caption = ""
-        for prompt_list in prompt_chunks:
-            prompt = self.__get_single_answer_prompt(prompt_list)
-            inputs = processor(prompt, raw_image, return_tensors="pt").to(
-                0, torch.float16
-            )
-            output = model.generate(
-                **inputs, max_new_tokens=self.max_tokens_per_chunk, do_sample=False
-            )
-            decoded = processor.decode(output[0][2:], skip_special_tokens=True)
-            cleaned = self.clean_output(decoded)
-            caption += cleaned
+        with torch.no_grad():
+            for prompt_list in prompt_chunks:
+                prompt = self.__get_single_answer_prompt(prompt_list)
+                inputs = processor(prompt, raw_image, return_tensors="pt").to(
+                    model_management.get_torch_device(), torch.float16
+                )
+                output = model.generate(
+                    **inputs, max_new_tokens=self.max_tokens_per_chunk, do_sample=False
+                )
+                decoded = processor.decode(output[0][2:], skip_special_tokens=True)
+                cleaned = self.clean_output(decoded)
+                caption += cleaned
+
+        del model
+        torch.cuda.empty_cache()
 
         return caption
 

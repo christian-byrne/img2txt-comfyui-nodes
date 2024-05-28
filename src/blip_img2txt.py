@@ -26,7 +26,7 @@ class BLIPImg2Txt:
         self.model_id = model_id
 
         # Determine do_sample and num_beams
-        if temperature < 1.05 and temperature > 0.95:
+        if temperature > 1.1 or temperature < 0.90:
             do_sample = True
             num_beams = 1  # Sampling does not use beam search
         else:

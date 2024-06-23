@@ -1,6 +1,6 @@
 {
-  "last_node_id": 60,
-  "last_link_id": 78,
+  "last_node_id": 61,
+  "last_link_id": 80,
   "nodes": [
     {
       "id": 45,
@@ -44,56 +44,6 @@
       }
     },
     {
-      "id": 47,
-      "type": "img2txt BLIP/Llava Multimodel Tagger",
-      "pos": [
-        596,
-        905
-      ],
-      "size": {
-        "0": 383.8721923828125,
-        "1": 425.2732849121094
-      },
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "input_image",
-          "type": "IMAGE",
-          "link": 53
-        }
-      ],
-      "outputs": [
-        {
-          "name": "caption",
-          "type": "STRING",
-          "links": [
-            54
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "img2txt BLIP/Llava Multimodel Tagger"
-      },
-      "widgets_values": [
-        true,
-        false,
-        false,
-        "a photograph of",
-        "What is the subject of this image?\nWhat are the mediums used to make this?\nWhat are the artistic styles this is reminiscent of?\nWhich famous artists is this reminiscent of?\nHow sharp or detailed is this image?\nWhat is the environment and background of this image?\nWhat are the objects in this image?\nWhat is the composition of this image?\nWhat is the color palette in this image?\nWhat is the lighting in this image?",
-        0.8,
-        1.2,
-        36,
-        128,
-        5,
-        "watermark, text, writing",
-        "a photograph of a drawing of a little girl in a pink dress with a butterfly on her head and a blue sky behind her and a green field with grass and blue sky in the background, "
-      ]
-    },
-    {
       "id": 42,
       "type": "CLIPTextEncode",
       "pos": [
@@ -105,7 +55,7 @@
         "1": 113.16606140136719
       },
       "flags": {},
-      "order": 4,
+      "order": 2,
       "mode": 0,
       "inputs": [
         {
@@ -144,7 +94,7 @@
         "1": 56.439388275146484
       },
       "flags": {},
-      "order": 5,
+      "order": 6,
       "mode": 0,
       "inputs": [
         {
@@ -155,7 +105,7 @@
         {
           "name": "text",
           "type": "STRING",
-          "link": 54,
+          "link": 80,
           "widget": {
             "name": "text"
           }
@@ -180,60 +130,18 @@
       ]
     },
     {
-      "id": 11,
-      "type": "LoadImage",
-      "pos": [
-        -135,
-        907
-      ],
-      "size": {
-        "0": 670,
-        "1": 460
-      },
-      "flags": {},
-      "order": 0,
-      "mode": 0,
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            53,
-            61,
-            70
-          ],
-          "shape": 3,
-          "slot_index": 0
-        },
-        {
-          "name": "MASK",
-          "type": "MASK",
-          "links": [],
-          "shape": 3,
-          "slot_index": 1
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "LoadImage"
-      },
-      "widgets_values": [
-        "example.png",
-        "image"
-      ]
-    },
-    {
       "id": 58,
       "type": "PreviewImage",
       "pos": [
         616,
         1631
       ],
-      "size": [
-        401.1783925448058,
-        246
-      ],
+      "size": {
+        "0": 401.17840576171875,
+        "1": 246
+      },
       "flags": {},
-      "order": 8,
+      "order": 7,
       "mode": 0,
       "inputs": [
         {
@@ -258,7 +166,7 @@
         "1": 26
       },
       "flags": {},
-      "order": 6,
+      "order": 5,
       "mode": 0,
       "inputs": [
         {
@@ -294,7 +202,7 @@
         "1": 98
       },
       "flags": {},
-      "order": 1,
+      "order": 0,
       "mode": 0,
       "outputs": [
         {
@@ -341,10 +249,10 @@
         2039,
         1262
       ],
-      "size": [
-        295.23323852527074,
-        293.2945397637195
-      ],
+      "size": {
+        "0": 295.2332458496094,
+        "1": 293.2945251464844
+      },
       "flags": {},
       "order": 11,
       "mode": 0,
@@ -471,7 +379,7 @@
         "1": 106
       },
       "flags": {},
-      "order": 7,
+      "order": 8,
       "mode": 0,
       "inputs": [
         {
@@ -532,6 +440,100 @@
       "properties": {
         "Node name for S&R": "InpaintModelConditioning"
       }
+    },
+    {
+      "id": 11,
+      "type": "LoadImage",
+      "pos": [
+        -135,
+        907
+      ],
+      "size": {
+        "0": 670,
+        "1": 460
+      },
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            61,
+            70,
+            79
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "shape": 3,
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "example.png",
+        "image"
+      ]
+    },
+    {
+      "id": 61,
+      "type": "img2txt BLIP/Llava Multimodel Tagger",
+      "pos": [
+        599,
+        886
+      ],
+      "size": [
+        414.8329491017887,
+        453.3791344354013
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "input_image",
+          "type": "IMAGE",
+          "link": 79
+        }
+      ],
+      "outputs": [
+        {
+          "name": "caption",
+          "type": "STRING",
+          "links": [
+            80
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "img2txt BLIP/Llava Multimodel Tagger"
+      },
+      "widgets_values": [
+        true,
+        false,
+        false,
+        false,
+        "a photograph of",
+        "What is the subject of this image?\n",
+        0.8,
+        1.2,
+        36,
+        128,
+        5,
+        "watermark, text, writing"
+      ],
+      "color": "#322",
+      "bgcolor": "#533"
     }
   ],
   "links": [
@@ -558,22 +560,6 @@
       42,
       0,
       "CLIP"
-    ],
-    [
-      53,
-      11,
-      0,
-      47,
-      0,
-      "IMAGE"
-    ],
-    [
-      54,
-      47,
-      0,
-      41,
-      1,
-      "STRING"
     ],
     [
       55,
@@ -686,16 +672,32 @@
       57,
       0,
       "MASK"
+    ],
+    [
+      79,
+      11,
+      0,
+      61,
+      0,
+      "IMAGE"
+    ],
+    [
+      80,
+      61,
+      0,
+      41,
+      1,
+      "STRING"
     ]
   ],
   "groups": [],
   "config": {},
   "extra": {
     "ds": {
-      "scale": 1.3310000000000008,
+      "scale": 0.8264462809917354,
       "offset": {
-        "0": 377.33700940861166,
-        "1": -430.87680873441934
+        "0": 478.9515963527572,
+        "1": -472.76124333876595
       }
     }
   },

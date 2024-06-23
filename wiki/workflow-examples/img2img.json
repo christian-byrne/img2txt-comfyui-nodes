@@ -1,6 +1,6 @@
 {
-  "last_node_id": 50,
-  "last_link_id": 58,
+  "last_node_id": 51,
+  "last_link_id": 60,
   "nodes": [
     {
       "id": 41,
@@ -25,7 +25,7 @@
         {
           "name": "text",
           "type": "STRING",
-          "link": 54,
+          "link": 60,
           "widget": {
             "name": "text"
           }
@@ -100,7 +100,7 @@
         "Node name for S&R": "KSampler"
       },
       "widgets_values": [
-        844021382511622,
+        290872458059323,
         "randomize",
         20,
         8,
@@ -151,56 +151,6 @@
       }
     },
     {
-      "id": 47,
-      "type": "img2txt BLIP/Llava Multimodel Tagger",
-      "pos": [
-        596,
-        905
-      ],
-      "size": {
-        "0": 383.8721923828125,
-        "1": 425.2732849121094
-      },
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "input_image",
-          "type": "IMAGE",
-          "link": 53
-        }
-      ],
-      "outputs": [
-        {
-          "name": "caption",
-          "type": "STRING",
-          "links": [
-            54
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "img2txt BLIP/Llava Multimodel Tagger"
-      },
-      "widgets_values": [
-        true,
-        false,
-        false,
-        "a photograph of",
-        "What is the subject of this image?\nWhat are the mediums used to make this?\nWhat are the artistic styles this is reminiscent of?\nWhich famous artists is this reminiscent of?\nHow sharp or detailed is this image?\nWhat is the environment and background of this image?\nWhat are the objects in this image?\nWhat is the composition of this image?\nWhat is the color palette in this image?\nWhat is the lighting in this image?",
-        0.8,
-        1.2,
-        36,
-        128,
-        5,
-        "watermark, text, writing",
-        "a photograph of a drawing of a little girl in a pink dress with a butterfly on her head and a blue sky behind her and a green field with grass and blue sky in the background, "
-      ]
-    },
-    {
       "id": 48,
       "type": "PreviewImage",
       "pos": [
@@ -226,6 +176,86 @@
       }
     },
     {
+      "id": 42,
+      "type": "CLIPTextEncode",
+      "pos": [
+        1056,
+        683
+      ],
+      "size": {
+        "0": 352.9139404296875,
+        "1": 113.16606140136719
+      },
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 51
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            45
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "text, watermark"
+      ]
+    },
+    {
+      "id": 50,
+      "type": "VAEEncode",
+      "pos": [
+        1119,
+        1329
+      ],
+      "size": {
+        "0": 201.4841766357422,
+        "1": 55.59581756591797
+      },
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "pixels",
+          "type": "IMAGE",
+          "link": 56
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 57
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            58
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEEncode"
+      }
+    },
+    {
       "id": 11,
       "type": "LoadImage",
       "pos": [
@@ -244,8 +274,8 @@
           "name": "IMAGE",
           "type": "IMAGE",
           "links": [
-            53,
-            56
+            56,
+            59
           ],
           "shape": 3,
           "slot_index": 0
@@ -315,88 +345,61 @@
         "Node name for S&R": "CheckpointLoaderSimple"
       },
       "widgets_values": [
-        "v1-5-pruned-emaonly.safetensors"
+        "dreamshaper_8.safetensors"
       ]
     },
     {
-      "id": 42,
-      "type": "CLIPTextEncode",
+      "id": 51,
+      "type": "img2txt BLIP/Llava Multimodel Tagger",
       "pos": [
-        1056,
-        683
+        605,
+        881
       ],
-      "size": [
-        352.9139297348879,
-        113.16606493276561
-      ],
+      "size": {
+        "0": 427.2057800292969,
+        "1": 476.26934814453125
+      },
       "flags": {},
-      "order": 3,
+      "order": 2,
       "mode": 0,
       "inputs": [
         {
-          "name": "clip",
-          "type": "CLIP",
-          "link": 51
+          "name": "input_image",
+          "type": "IMAGE",
+          "link": 59
         }
       ],
       "outputs": [
         {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
+          "name": "caption",
+          "type": "STRING",
           "links": [
-            45
+            60
           ],
           "shape": 3,
           "slot_index": 0
         }
       ],
       "properties": {
-        "Node name for S&R": "CLIPTextEncode"
+        "Node name for S&R": "img2txt BLIP/Llava Multimodel Tagger"
       },
       "widgets_values": [
-        "text, watermark"
-      ]
-    },
-    {
-      "id": 50,
-      "type": "VAEEncode",
-      "pos": [
-        1119,
-        1329
+        true,
+        false,
+        false,
+        false,
+        "a photograph of",
+        "What is the subject and background of this image?",
+        0.7000000000000001,
+        1.26,
+        36,
+        128,
+        5,
+        "watermark, text, writing",
+        "a photograph of a girl dressed up, in pink dress and bright blue eyes poses in the grass with arms spread out in front of her face, holding an umbrella on a sky, "
       ],
-      "size": [
-        201.4841776687722,
-        55.595816998880764
-      ],
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "pixels",
-          "type": "IMAGE",
-          "link": 56
-        },
-        {
-          "name": "vae",
-          "type": "VAE",
-          "link": 57
-        }
-      ],
-      "outputs": [
-        {
-          "name": "LATENT",
-          "type": "LATENT",
-          "links": [
-            58
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "VAEEncode"
-      }
+      "color": "#322",
+      "bgcolor": "#533"
     }
   ],
   "links": [
@@ -457,22 +460,6 @@
       "CLIP"
     ],
     [
-      53,
-      11,
-      0,
-      47,
-      0,
-      "IMAGE"
-    ],
-    [
-      54,
-      47,
-      0,
-      41,
-      1,
-      "STRING"
-    ],
-    [
       55,
       45,
       0,
@@ -503,16 +490,32 @@
       39,
       3,
       "LATENT"
+    ],
+    [
+      59,
+      11,
+      0,
+      51,
+      0,
+      "IMAGE"
+    ],
+    [
+      60,
+      51,
+      0,
+      41,
+      1,
+      "STRING"
     ]
   ],
   "groups": [],
   "config": {},
   "extra": {
     "ds": {
-      "scale": 1.2100000000000006,
+      "scale": 0.9090909090909091,
       "offset": {
-        "0": 382.82160745519366,
-        "1": -214.34788311458405
+        "0": 304.575645264068,
+        "1": -258.56908735931404
       }
     }
   },

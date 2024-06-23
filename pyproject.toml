@@ -1,7 +1,7 @@
 [project]
 name = "img2txt-comfyui-nodes"
-description = "img2txt auto captioning. Choose from models: BLIP, Llava, MiniCPM, MS-GIT. Use model combos and merge results. Specify questions to ask about images (medium, art style, background). Automatic model download/management. Supports Chinese 🇨🇳 questions/answers via MiniCPM."
-version = "1.1.0"
+description = "Get general description or specify questions to ask about images (medium, art style, background, etc.). Supports Chinese 🇨🇳 via MiniCPM model."
+version = "1.1.1"
 license = "LICENSE"
 dependencies = ["transformers>=4.36.0", "bitsandbytes>=0.43.0", "timm==0.9.10", "sentencepiece==0.1.99", "accelerate>=0.3.0"]
 
@@ -11,5 +11,5 @@ Repository = "https://github.com/christian-byrne/img2txt-comfyui-nodes"
 
 [tool.comfy]
 PublisherId = "christian-byrne"
-DisplayName = "img2txt-comfyui-nodes"
-Icon = "https://img.icons8.com/?size=100&id=7212&format=png&color=000000"
+DisplayName = "Img2txt - Auto Caption"
+Icon = "https://img.icons8.com/?size=100&id=49374&format=png&color=000000"

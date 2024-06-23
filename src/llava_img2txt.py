@@ -2,7 +2,7 @@ import os
 from PIL import Image
 import torch
 import model_management
-from transformers import AutoProcessor, LlavaForConditionalGeneration
+from transformers import AutoProcessor, LlavaForConditionalGeneration, BitsAndBytesConfig
 
 
 class LlavaImg2Txt:
@@ -44,16 +44,23 @@ class LlavaImg2Txt:
         Args:
             raw_image (Image): Image to generate caption for
         """
-
         # Convert Image to RGB first
         if raw_image.mode != "RGB":
             raw_image = raw_image.convert("RGB")
+
+        dtype = torch.float16
+        quant_config = BitsAndBytesConfig(
+            load_in_4bit=self.use_4bit,
+            bnb_4bit_compute_dtype=dtype,
+            bnb_4bit_quant_type="fp4"
+        )
+
         model = LlavaForConditionalGeneration.from_pretrained(
             self.model_id,
-            torch_dtype=torch.float16,
+            torch_dtype=dtype,
             low_cpu_mem_usage=self.use_low_cpu_mem,
-            load_in_4bit=self.use_4bit,
             use_flash_attention_2=self.use_flash2,
+            quantization_config=quant_config,
         )
 
         # model.to() is not supported for 4-bit or 8-bit bitsandbytes models. With 4-bit quantization, use the model as it is, since the model will already be set to the correct devices and casted to the correct `dtype`.
@@ -73,7 +80,7 @@ class LlavaImg2Txt:
                 output = model.generate(
                     **inputs, max_new_tokens=self.max_tokens_per_chunk, do_sample=False
                 )
-                decoded = processor.decode(output[0][2:], skip_special_tokens=True)
+                decoded = processor.decode(output[0][2:])
                 cleaned = self.clean_output(decoded)
                 caption += cleaned
 
@@ -97,7 +104,6 @@ class LlavaImg2Txt:
         "USER: <image>\n<prompt1> ASSISTANT: <answer1></s>USER: <prompt2> ASSISTANT: <answer2></s>USER: <prompt3> ASSISTANT:"
         From: https://huggingface.co/docs/transformers/en/model_doc/llava#usage-tips
         Not sure how the formatting works for multi-turn but those are the docs.
-
         """
         prompt = "USER: <image>\n"
         for index, question in enumerate(questions):

@@ -38,7 +38,6 @@ class BLIPImg2Txt:
         # Initialize text config kwargs
         self.text_config_kwargs = {
             "do_sample": do_sample,
-            # "max_new_tokens": max_words,
             "max_length": max_words,
             "min_length": min_words,
             "repetition_penalty": repetition_penalty,
@@ -63,7 +62,6 @@ class BLIPImg2Txt:
         model = BlipForConditionalGeneration.from_pretrained(
             self.model_id,
             config=config,
-            trust_remote_code=True,
             torch_dtype=torch.float16,
         ).to(model_management.get_torch_device())
 

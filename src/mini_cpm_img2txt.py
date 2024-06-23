@@ -2,6 +2,7 @@ import torch
 from PIL import Image
 from transformers import AutoModel, AutoTokenizer
 
+import model_management
 
 class MiniPCMImg2Txt:
     def __init__(self, question_list: list[str], temperature: float = 0.7):
@@ -17,15 +18,16 @@ class MiniPCMImg2Txt:
         return ret
 
     def generate_captions(self, raw_image: Image.Image) -> str:
+        device = model_management.get_torch_device()
+
+        # For Nvidia GPUs support BF16 (like A100, H100, RTX3090)
+        # For Nvidia GPUs do NOT support BF16 (like V100, T4, RTX2080)
+        torch_dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
+
         model = AutoModel.from_pretrained(
-            "openbmb/MiniCPM-V-2", trust_remote_code=True, torch_dtype=torch.bfloat16
+            "openbmb/MiniCPM-V-2", trust_remote_code=True, torch_dtype=torch_dtype
         )
-        try:
-            # For Nvidia GPUs support BF16 (like A100, H100, RTX3090
-            model = model.to(device="cuda", dtype=torch.bfloat16)
-        except Exception:
-            # For Nvidia GPUs do NOT support BF16 (like V100, T4, RTX2080)
-            model = model.to(device="cuda", dtype=torch.float16)
+        model = model.to(device=device, dtype=torch_dtype)
 
         tokenizer = AutoTokenizer.from_pretrained(
             self.model_id, trust_remote_code=True

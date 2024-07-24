@@ -1,4 +1,3 @@
-import os
 from PIL import Image
 import torch
 import model_management

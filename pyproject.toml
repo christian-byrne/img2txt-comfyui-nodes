@@ -3,7 +3,7 @@ name = "img2txt-comfyui-nodes"
 description = "Get general description or specify questions to ask about images (medium, art style, background, etc.). Supports Chinese 🇨🇳 questions via MiniCPM model."
 version = "1.1.4"
 license = "LICENSE"
-dependencies = ["transformers>=4.36.0", "bitsandbytes>=0.43.0", "timm>=1.0.7", "sentencepiece==0.1.99", "accelerate>=0.3.0", "deepspeed"]
+dependencies = ["transformers<=4.41.2", "bitsandbytes>=0.43.0", "timm>=1.0.7", "sentencepiece", "accelerate>=0.3.0"]
 
 [project.urls]
 Repository = "https://github.com/christian-byrne/img2txt-comfyui-nodes"
@@ -11,5 +11,5 @@ Repository = "https://github.com/christian-byrne/img2txt-comfyui-nodes"
 
 [tool.comfy]
 PublisherId = "christian-byrne"
-DisplayName = "Img2txt - Auto Caption"
+DisplayName = "img2txt-comfyui-nodes"
 Icon = "https://img.icons8.com/?size=100&id=49374&format=png&color=000000"

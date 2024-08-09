@@ -1,28 +1,30 @@
 
 
-**Auto-generate caption (BLIP Only)**:
+**Auto-generate caption (BLIP)**:
 
-![alt text](wiki/demo-pics/Selection_003.png)
+![alt text](docs/demo-pics/Selection_003.png)
 
 **Using to automate img2img process (BLIP and Llava)**
 
-![alt text](wiki/demo-pics/Selection_002.png)
+![alt text](docs/demo-pics/Selection_002.png)
 
 
 ## Requirements/Dependencies
 
-- Shared with ComfyUI
-  - Pillow>=8.3.2
-  - torch>=2.2.1
-  - torchvision>=0.17.1
-- For Llava model
-  - bitsandbytes>=0.43.0
-  - accelerate>=0.3.0
-- For MiniCPM model
-  - transformers>=4.36.0
-  - timm==0.9.10
-  - sentencepiece==0.1.99
-- Python 3.10+
+For Llava
+
+```
+bitsandbytes>=0.43.0
+accelerate>=0.3.0
+```
+
+For MiniCPM
+
+```
+transformers<=4.41.2
+timm>=1.0.7
+sentencepiece
+```
 
 ## Installation
 
@@ -38,7 +40,7 @@
 
 - The `MiniCPM` model works with Chinese text input without any additional configuration. The output will also be in Chinese. 
   - "MiniCPM-V 2.0 supports strong bilingual multimodal capabilities in both English and Chinese. This is enabled by generalizing multimodal capabilities across languages, a technique from VisCPM"
-<!-- - Here are the input field descriptions in Chinese, translated by  -->
+- Please support the creators of MiniCPM [here](https://github.com/OpenBMB/MiniCPM-V)
 
 ## Tips
 
@@ -49,13 +51,13 @@
 
 - Models are downloaded automatically using the Huggingface cache system and the transformers `from_pretrained` method so no manual installation of models is necessary.
 - If you really want to manually download the models, please refer to [Huggingface's documentation concerning the cache system](https://huggingface.co/docs/transformers/main/en/installation#cache-setup). Here is the relevant except:
-  - Pretrained models are downloaded and locally cached at  `~/.cache/huggingface/hub`. This is the default directory given by the shell environment variable TRANSFORMERS_CACHE. On Windows, the default directory is given by `C:\Users\username\.cache\huggingface\hub`. You can change the shell environment variables shown below - in order of priority - to specify a different cache directory:
-    - Shell environment variable (default): HUGGINGFACE_HUB_CACHE or TRANSFORMERS_CACHE.
-    - Shell environment variable: HF_HOME.
-    - Shell environment variable: XDG_CACHE_HOME + /huggingface.
+  - > Pretrained models are downloaded and locally cached at  `~/.cache/huggingface/hub`. This is the default directory given by the shell environment variable TRANSFORMERS_CACHE. On Windows, the default directory is given by `C:\Users\username\.cache\huggingface\hub`. You can change the shell environment variables shown below - in order of priority - to specify a different cache directory:
+    > - Shell environment variable (default): HUGGINGFACE_HUB_CACHE or TRANSFORMERS_CACHE.
+    > - Shell environment variable: HF_HOME.
+    > - Shell environment variable: XDG_CACHE_HOME + /huggingface.
 
 
-## Models Implemented (so far)
+## Models
 
 - [MiniCPM](https://huggingface.co/openbmb/MiniCPM-V-2/tree/main) (Chinese & English)
   - **Title**: MiniCPM-V-2 - Strong multimodal large language model for efficient end-side deployment
@@ -69,11 +71,7 @@
   - **Title**: LLava: Large Language Models for Vision and Language Tasks 
   - **Size**: ~ 15GB
   - **Dataset**: 558K filtered image-text pairs from LAION/CC/SBU, captioned by BLIP, 158K GPT-generated multimodal instruction-following data, 450K academic-task-oriented VQA data mixture, 40K ShareGPT data.
-- Coming Soon: [Microsoft - Git Large coco](https://huggingface.co/microsoft/git-large-coco)
-  - **Title**: GIT (short for GenerativeImage2Text) mode
-  - **Size**: ~ 3GB
-  - **Dataset**: COCO  
-- [More - to do](https://huggingface.co/models?pipeline_tag=image-to-text&sort=trending)
+<!-- -(https://huggingface.co/models?pipeline_tag=image-to-text&sort=trending) -->
 
 ## Prompts
 

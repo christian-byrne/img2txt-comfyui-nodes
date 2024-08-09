@@ -1,13 +1,12 @@
 """
 @author: christian-byrne
-@title: Img2Txt auto captioning. Choose from models: BLIP, Llava, MiniCPM, MS-GIT. Use model combos and merge results. Specify questions to ask about images (medium, art style, background). Supports Chinese 🇨🇳 questions via MiniCPM.
-@nickname: Image to Text - Auto Caption
+@title: Img2Txt auto captioning
 """
 
 import torch
 from torchvision import transforms
 
-from .img_tensor_utils import TensorImgUtils
+from tensor_img_utils import TensorImgUtils
 from .llava_img2txt import LlavaImg2Txt
 from .blip_img2txt import BLIPImg2Txt
 from .mini_cpm_img2txt import MiniPCMImg2Txt
